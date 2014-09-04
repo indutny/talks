@@ -1,0 +1,526 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title TLS
+
+    link(rel='stylesheet', type='text/css', href='build/build.css')
+
+  body
+
+    article
+
+      section
+        h1 TLS
+
+      section
+        h2 whoami
+
+      section
+        h2 Fedor Indutny
+        br
+        h2 Node.js core (TLS, Crypto)
+
+      section
+        h1 SSL / TLS
+
+      section
+        h2 Understanding crypto in C could be...
+        ul
+          li
+          li
+            h3 ...a bit painful
+
+      section
+        h2 But what if...
+
+      section
+        ul
+          li
+            h2 Fast scripting language
+          li
+            h2 Bare protocol
+          li
+            h2 Simple OpenSSL bindings
+
+      section
+        h1 TLS.js
+        img(src="/images/tlsjs-qr.png")
+        h3 https://github.com/indutny/tls.js
+
+      section
+        h2 TLS.js
+        pre
+          code.language-clike.
+            npm install tls.js
+        ul
+          li
+          li
+            h2
+              i Hack with it!
+
+      section
+        h2 demo time
+
+      section
+        h2 MiTM
+        ul
+          li
+            h2 WiFi ssid + key
+          li
+            h2 +
+          li
+            h2 RSA private key
+          li
+            h2 = fun!
+
+      section
+        h2 Toggle your wifi connection
+        ul
+          li
+          li
+            img(src="/images/mitmjs-qr.png")
+            h3 https://nodeconf.indutny.com
+          li
+            h2 submit some messages
+
+      section
+        h1 Fork MiTM.js
+        img(src="/images/mitmjs-qr.png")
+        h3 https://github.com/indutny/mitm.js
+
+      section
+        h2 How does TLS work, anyway?
+
+      section
+        h1 RFC 5246
+        img(src="/images/rfc-5246-qr.png")
+        ul
+          li
+          li
+            h3 ...is scary
+          li
+            h3 lots of pages
+          li
+            h4 such... wow
+
+      section
+        h2 Without minor nits, version differences, compatibility...
+        ul
+          li
+          li
+            h1
+              The protocol is simple!
+
+      section
+        h2 Some useful info first...
+
+      section
+        h2 Cipher Suite
+
+      section
+        h2 Collection of algorithms
+        ul
+          li
+            h3 Key exchange (DH, DHE, ECDH, DCHE)
+          li
+            h3 Auth (RSA, DSA, ECDSA)
+          li
+            h3 Cipher (AES, DES, ChaCha, IDEA)
+          li
+            h3 Hash (MD5, SHA1, SHA256)
+
+      section
+        pre
+          code.language-javascript.
+            algorithms.join('-');
+
+      section
+        pre
+          code.language-javascript.
+            algorithms.join('-');
+            'AES256-SHA'; // RSA is omitted here
+
+      section
+        pre
+          code.language-javascript.
+            algorithms.join('-');
+            'AES256-SHA'; // RSA is omitted here
+            'ECDHE-RSA-AES256-SHA384';
+
+      section
+        pre
+          code.language-javascript.
+            algorithms.join('-');
+            'AES256-SHA'; // RSA is omitted here
+            'ECDHE-RSA-AES256-SHA384';
+            'NULL-MD5'; // Don't use it!
+
+      section
+        h3 List of supported ciphers
+        pre
+          code.language-clike.
+            $ openssl ciphers -v
+            DHE-RSA-AES256-SHA
+            DHE-DSS-AES256-SHA
+            AES256-SHA
+            ...
+
+      section
+        h3 Server configuration
+        pre
+          code.language-clike.
+            openssl ciphers -v \
+            ECDHE-RSA-AES256-SHA384:AES256-SHA:AES128-SHA
+
+      section
+        h2 Order of preference
+
+      section
+        h2 Preference criteria
+        ul
+          li
+            h3 1. PFS (ECDHE, DHE)
+          li
+            h3 2. AES256, AES-GCM
+          li
+            h3 3. Stronger hashes (SHA256, SHA384, not MD5)
+
+      section
+        h2 Support older clients
+
+      section
+        h3 My recommendation
+        img(src="/images/ciphers-qr.png")
+        h3 http://git.io/Vqkt9g
+
+      section
+        pre
+          code.language-javascript.
+            tls.createServer({
+              key: ...,
+              cert: ...,
+              honorCipherOrder: true,
+              ciphers:
+                'ECDHE-RSA-AES256-GCM-SHA384:' +
+                'ECDHE-RSA-AES128-GCM-SHA256:...'
+            }, ...)
+
+      section
+        h3 Check your server here
+        h2 ssllabs.com/ssltest/
+
+      section
+        img(src="/images/ssllabs.png",width="600")
+
+      section
+        h2 Now back to TLS.js
+
+      section
+        h2 Framer
+        pre
+          code.language-javascript.
+            var state = tls.state.createDummy({});
+            var framer = tls.framer.create(state);
+            framer.hello('client', {
+              cipherSuites: [],
+              random: new Buffer(32)
+            });
+            framer.read();  // &lt;Buffer 16 03 03 ...
+            // or framer.pipe(socket)
+
+      section
+        h2 Parser
+        pre
+          code.language-javascript.
+            var parser = tls.parser.create(state);
+            framer.pipe(parser);
+            framer.hello('client', {
+              cipherSuites: [],
+              random: new Buffer(32)
+            });
+            parser.read();  // output on next slide
+
+      section
+        h2 Parser
+        pre
+          code.language-javascript.
+            { version: 0x0303, // TSL1.2
+              maxVersion: 0x0303, // TLS1.2
+              type: 'handshake',
+              handshakeType: 'client_hello',
+              random: ...,
+              session: false,
+              cipherSuites: [],
+              cipherSuite: null,
+              extensions: {} }
+
+      section
+        h2 State machine
+        pre
+          code.language-javascript.
+            if (frame.type === 'alert')
+              handled = this.handleAlert(frame);
+            else if (frame.type === 'handshake')
+              handled = this.handleHandshake(frame);
+            else if (frame.type === 'change_cipher_spec')
+              handled = this.handleChangeCipher(frame);
+            else if (frame.type === 'application_data')
+              handled = this.handleAppData(frame);
+
+      section
+        h2 Handshake example
+
+      section
+        img(src="/images/darth-client.jpg",width="600")
+
+      section
+        h2 ClientHello
+        pre
+          code.language-javascript.
+            this.framer.hello('client', {
+              maxVersion: 0x0303,  // TLS1.2
+              cipherSuites: [
+                // Pick some from:
+                // `tls.constants.cipherSuite`
+                'TLS_RSA_WITH_AES_128_CBC_SHA'
+              ],
+              extensions: {
+                server_name: 'deathstar.empire.com',
+              }
+            });
+
+      section
+        img(src="/images/death-server.jpg",width="600")
+
+      section
+        h2 ServerHello
+        pre
+          code.language-javascript.
+            var cipher = this.selectCipherSuite(
+                frame.cipherSuites);
+            if (!cipher)
+              return false;
+
+            this.framer.hello('server', {
+              cipherSuite: cipher
+            });
+
+      section
+        h2 Certificate (usually)
+        pre
+          code.language-javascript.
+            this.framer.certificate([
+              new Buffer(...),
+              new Buffer(...)
+            ]);
+
+      section
+        h2 and ServerHelloDone
+        pre
+          code.language-javascript.
+            this.framer.helloDone();
+
+      section
+        h2 Now both sides know:
+        ul
+          li
+          li
+            h2 Algorithms
+          li
+            h2 But don't have keys, IVs
+
+      section
+        h2 ClientKeyExchange
+        pre
+          code.language-javascript.
+            var preMaster = new Buffer(2 + 46);
+            preMaster.writeUInt16BE(this.version, 0, true);
+            this.crypto.random(46).copy(preMaster, 2);
+
+            this.pending.preMaster = preMaster;
+
+      section
+        h2 ClientKeyExchange (pt 2)
+        pre
+          code.language-javascript.
+            var out = new Buffer(2 + pub.size());
+            this.crypto.encryptPublic(out.slice(2),
+                                      preMaster,
+                                      pub);
+
+            out.writeUInt16BE(out.length - 2, 0, true);
+            this.framer.keyExchange('client', out);
+
+      section
+        h2 Meanwhile on server
+
+      section
+        pre
+          code.language-javascript.
+            var preMaster = new Buffer(48);
+            preMaster = this.crypto.decryptPrivate(
+                preMaster,
+                keyEx,
+                this.key.key);
+
+      section
+        h2 Both have shared
+        h2 PreMaster secret
+
+      section
+        h2 Generate keys, through
+        h2 PRF expansion
+
+      section
+        h2 PRF expansion
+        pre
+          code.language-javascript.
+            // Pseudo-code
+            Math.setRandomSeed(preMaster)
+            while (still_needed)
+              out.push((Math.random() * 256) | 0);
+
+      section
+        h2 Both sides ready to encrypt
+
+      section
+        h2 ChangeCipherSpec/Finished
+        pre
+          code.language-javascript.
+            // All consequent data will be encrypted
+            this.framer.changeCipherSpec();
+            // Verify the handshake integrity
+            this.switchToPending('write', function() {
+              self.framer.finished(verifyData);
+            });
+
+      section
+        h2 Established!
+        pre
+          code.language-javascript.
+            client.emit('secure');
+            server.emit('secure');
+
+            client.write('GET / HTTP/1.1\r\n\r\n');
+            server.write('HTTP/1.1 200 OK\r\n\r\n' +
+                         'hello world');
+
+      section
+        h1 Fork TLS.js
+        img(src="/images/tlsjs-qr.png")
+        h3 https://github.com/indutny/tls.js
+
+      section
+        h1 Fork OpenSSL
+        img(src="/images/openssl-qr.png")
+        h3 https://github.com/openssl/openssl
+
+      section
+        h1 FIN
+
+      section
+        h1 Side notes
+
+      section
+        h1 Bud
+        img(src="/images/bud-qr.png")
+        h3 https://github.com/indutny/bud
+
+      section
+        h1 TLS babel-fish
+
+      section
+        h2 Features:
+
+      section
+        h2 Runs on libuv
+
+      section
+        h2 JSON config
+        pre
+          code.language-javascript.
+            {
+              "workers": 8,
+              "frontend": {
+                "key": "key.pem",
+                "cert": "cert.pem",
+                "port": 443
+              },
+              "backend": [{
+                "host": 80
+              }]
+            }
+
+      section
+        ul
+          li
+            h3 (a)?sync SNI routing
+          li
+            h3 async OCSP stapling
+          li
+            h3 Backend balancing
+          li
+            h3 DTrace hooks
+          li
+            h3 DSO logger
+
+      section
+        h2 JSON proxy
+        pre
+          code.language-clike.
+            BUD {"family":"tcp4","peer":{"host":...,"port":...},...}
+            GET / HTTP/1.1
+
+      section
+        h1 Bud is fun!
+
+      section
+        pre
+          code.language-clike.
+            $ npm install -g bud-tls
+            $ bud -h
+            $ bud --default-config > conf.json
+            $ vim conf.json
+            $ bud --config conf.json
+
+      section
+        h1 FIN
+
+      section
+        h1 FIN.
+
+      section
+        h1 FIN..
+
+      section
+        h1 FIN...
+
+      section
+        h2 Looks like I have more time!
+
+      section
+        h2 node.js v0.12 TLS changes
+        ul
+          li
+            h2 TLS moved to C++
+          li
+            h2 ECDHE/DHE cipher support
+          li
+            h2 Async OCSP stapling
+
+      section
+        h2 crypto changes:
+        ul
+          li
+            h2 ECDH
+          li
+            h2 RSA
+          li
+            h2 AES-GCM support
+
+      section
+        h1 FIN
+
+    script(src='build/build.js')

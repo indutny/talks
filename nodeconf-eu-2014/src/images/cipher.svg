@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<svg width="453" height="122" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <g>
+  <title>Layer 1</title>
+  <path stroke="#000000" id="svg_3" d="m96.640625,25.833344l0,5.666656l69,0l0,-6" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" fill="none"/>
+  <path stroke="#000000" id="svg_4" d="m175.140625,25.833344l0,5.666656l45,0l0,-6" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" fill="none"/>
+  <path stroke="#000000" id="svg_5" d="m245.140625,25.833344l0,5.666656l74,0l0,-6" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" fill="none"/>
+  <text stroke="#000000" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_1" y="21.5" x="243.640625" stroke-width="0" fill="#000000">(DHE-) RSA - AES256 - SHA</text>
+  <path stroke="#000000" id="svg_6" d="m346.640625,25.833344l0,5.666656l40,0l0,-6" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" fill="none"/>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_7" y="71.5" x="81.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Secret derivation</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_8" y="115.5" x="173.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Authentication</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_9" y="74.5" x="280.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Cipher</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_10" y="111.5" x="396.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Hash/Hmac</text>
+  <line id="svg_11" y2="37.5" x2="114.640625" y1="47.5" x1="102.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" stroke="#000000" fill="none"/>
+  <line id="svg_12" y2="36.5" x2="189.640625" y1="91.5" x1="189.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" stroke="#000000" fill="none"/>
+  <line id="svg_13" y2="34.5" x2="275.640625" y1="49.5" x1="275.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" stroke="#000000" fill="none"/>
+  <line id="svg_14" y2="38.5" x2="364.640625" y1="88.5" x1="379.640625" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" stroke="#000000" fill="none"/>
+ </g>
+</svg>

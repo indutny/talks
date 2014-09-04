@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel=stylesheet href="/css/bootstrap.min.css"/>
+
+    <title>Nodeconf EU 2014 Demo</title>
+  </head>
+  <body>
+    <div class=container>
+      <h1>Nodeconf EU 2014 Demo</h1>
+      <div id=status></div>
+      <form id=secret-form role=form>
+        <div class=form-group>
+          <input type=text
+                 class=form-control
+                 name=from
+                 required
+                 placeholder="Your name"/>
+        </div>
+        <div class=form-group>
+          <textarea class=form-control
+                    name=message
+                    rows=5
+                    required
+                    placeholder="Your secret message"></textarea>
+        </div>
+        <button id=btn
+                type=submit
+                class="btn btn-primary"
+                data-loading-text="Submitting...">Post</button>
+      </form>
+    </div>
+
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>
