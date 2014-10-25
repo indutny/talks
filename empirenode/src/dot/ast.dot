@@ -1,0 +1,27 @@
+digraph {
+  Program -> VariableDeclaration;
+    VariableDeclaration -> VariableDeclarator;
+      VariableDeclarator -> id1;
+      id1 [label="Identifier<r>"];
+
+  Program -> IfStatement
+    IfStatement -> SomeCondition;
+
+    IfStatement -> AssignmentExpression1;
+    AssignmentExpression1 [label="AssignmentExpression"];
+      AssignmentExpression1 -> ida1;
+      ida1 [label="Identifier<r>"];
+      AssignmentExpression1 -> one;
+      one [label="Literal<1>"];
+
+    IfStatement -> AssignmentExpression2;
+    AssignmentExpression2 [label="AssignmentExpression"];
+      AssignmentExpression2 -> ida2;
+      ida2 [label="Identifier<r>"];
+      AssignmentExpression2 -> two;
+      two [label="Literal<2>"];
+
+  Program -> ReturnStatement;
+    ReturnStatement -> idr1;
+    idr1 [label="Identifier<r>"];
+}

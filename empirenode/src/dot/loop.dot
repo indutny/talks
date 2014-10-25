@@ -1,0 +1,16 @@
+digraph {
+  node [shape=record];
+
+  B0 -> B1;
+  B1 -> B2;
+  B2 -> B4;
+  B1 -> B3;
+  B4 -> B1;
+  B3;
+  B4;
+
+  B0 [label="{B0|arr = array|c0 = literal %0|c1 = literal %0|to_phi p0, c0|to_phi p1, c1}"];
+  B1 [label="{B1|p0 = phi|p1 = phi|v1 = literal %'length'|v2 = getProperty arr, v1|v4 = compare v2, p0|branch v4}"];
+  B2 [label="{B2|v5 = literal %1|v6 = binary %"+", p0, v5|v7 = literal %'length'|v8 = getProperty arr, v7|to_phi p0, v6|to_phi p1, v8}"];
+  B3 [label="{B3|t0 = add p0, p1|ret t0}"];
+}

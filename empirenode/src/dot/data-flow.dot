@@ -1,0 +1,23 @@
+digraph {
+  node [shape=record];
+
+  B1;
+  B1 -> B2 [style=dashed];
+  B1 -> B3 [style=dashed];
+
+  B2 -> B4 [style=dashed];
+  B3 -> B4 [style=dashed];
+
+  B2:s1 -> B2:s2 [color=red];
+  B2:s2 -> B4:s2 [color=red];
+  B3:s3 -> B3:s2 [color=red];
+  B3:s2 -> B4:s2 [color=red];
+
+  B1 [label="{i5 = branch someCondition}"]
+
+  B2 [label="{<s1> ssa/1/r = literal %1|<s2> to_phi ssa/2/r, ssa/1/r}"]
+
+  B3 [label="{<s3> ssa/3/r = literal %2|<s2> to_phi ssa/2/r, ssa/3/r}"]
+
+  B4 [label="{<s2>ssa/2/r = phi|i11 = ret ssa/2/r}"]
+}

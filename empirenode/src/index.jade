@@ -1,0 +1,343 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Compilers are your friends
+
+    link(rel='stylesheet', type='text/css', href='build/build.css')
+
+  body
+
+    article
+
+      section
+        h2 whoami
+
+      section
+        h2 Fedor Indutny
+        br
+        h2 Node.js core
+        br
+        h2 Voxer
+
+      section
+        h1 Compilers are our friends
+
+      section
+        span empire.indutny.com
+        img(src="/images/qr-slide.svg",width="500")
+
+      section
+        h2 Friendship is about
+        h2 understanding each other
+
+      section
+        h2 Compiler does a lot of work to understand us well
+
+      section
+        h2 We are not good friend
+
+      section
+        h2 Building the friendship
+        h2 by learning the language(s) that it speaks
+
+      section
+        h2 Enter compiler's world
+
+      section
+        h2 Source code
+        img(src="/images/matrix-pill.jpg",width="600")
+
+      section
+        img(src="/images/js-src.png",width="600")
+
+      section
+        ul
+          li Series of abstractions
+          li IR (Intermediate Representations)
+
+      section
+        h1 AST
+        ul
+          li Abstract Syntax Tree
+
+      section
+        img(src="/images/js-src.png",width="600")
+
+      section
+        h2 Mozilla AST (Esprima)
+        img(src="/images/ast.png",width="300")
+
+      section
+        img(src="/images/ast.svg",width="600")
+
+      section
+        h2 But why?
+        ul
+          li Whitespace, comments
+          li Compact representation
+          li Context
+
+      section
+        h2 Let's dig deeper
+
+      section
+        h3 CFG/SSA
+        img(src="/images/matrix-green.jpg",width="600")
+
+      section
+        h1 CFG
+        ul
+          li Control Flow Graph
+
+      section
+        h2 Branch
+        img(src="/images/cfg.svg",width="600")
+
+      section
+        h2 Loop
+        img(src="/images/loop.svg",width="200")
+
+      section
+        h2 Because...
+        ul
+          li CPU is not operating on trees
+
+      section
+        img(src="/images/turing.jpg",width="600")
+
+      section
+        img(src="/images/turing-6502.jpg",width="600")
+
+      section
+        h1 SSA
+        ul
+          li Static Single Assignment
+
+      section
+        h2 Pretty much functional representation
+
+      section
+        h2 Everything assigned only once
+
+      section
+        img(src="/images/ssa-once.png",width="600")
+
+      section
+        h2 Everything is an instruction
+        h2 Every instruction input is an instruction too
+
+      section
+        h2 We had CFG
+        img(src="/images/cfg.png",width="600")
+
+      section
+        h2 We'll use following notation
+        ul
+          li {instruction id} = {instruction name} {input}, ...
+          li i1 = literal %1
+          li i3 = add i1, i2
+
+      section
+        h2 ...and here is SSA
+        img(src="/images/ssa.png",width="600")
+
+      section
+        h2 But why?
+        ul
+          li Data-flow analysis
+          li Stable types
+
+      section
+        img(src="/images/ssa-arrows.png",width="600")
+
+      section
+        img(src="/images/ssa-arrows-2.png",width="600")
+
+      section
+        img(src="/images/ssa-arrows-3.png",width="600")
+
+      section
+        h3 But why? (Continued)
+        ul
+          li DCE (Dead Code Elimination)
+
+      section
+        img(src="/images/ssa.png",width="600")
+
+      section
+        img(src="/images/ssa-dce.png",width="600")
+
+      section
+        img(src="/images/ssa-dce-2.png",width="600")
+
+      section
+        img(src="/images/ssa-dce-3.png",width="600")
+
+      section
+        img(src="/images/ssa-dce-4.png",width="600")
+
+      section
+        h3 But why? (Continued)
+        ul
+          li GVN (Global Value Numbering)
+
+      section
+        img(src="/images/loop-cfg.png",height="400")
+
+      section
+        img(src="/images/loop-cfg-pre-gvn-1.png",height="400")
+
+      section
+        img(src="/images/loop-cfg-pre-gvn-2.png",height="400")
+
+      section
+        img(src="/images/loop-cfg-pre-gvn-3.png",height="400")
+
+      section
+        h2 Merging all `GP{A,L}` together and moving to the top
+
+      section
+        img(src="/images/loop-cfg-gvn.png",height="400")
+
+      section
+        h2 AST -> CFG/SSA problems?
+
+      section
+        img(src="/images/cfg.svg",width="600")
+
+      section
+        h2 `@a` is assigned twice in different branches
+
+      section
+        h1 Solution?
+
+      section
+        h1 Phi functions
+
+      section
+        img(src="/images/ssa.svg",width="600")
+
+      section
+        h1 Phi is just an abstraction
+
+      section
+        img(src="/images/ssa.png",width="600")
+
+      section
+        h1 What's next?
+
+      section
+        h2 We have
+        ul
+          li SSA/CFG form
+          li Optimizations
+
+      section
+        h1 All hail...
+
+      section
+        h2 Machine code
+        img(src="/images/matrix-yellow.png",width="600")
+
+      section
+        h1 Start with imaginary CPU
+
+      section
+        h1 With unlimited number of
+        h1 Virtual Registers
+
+      section
+        img(src="/images/complex-virtual-regs.png",height="400")
+
+      section
+        h2 Register allocator
+        h3 (Linearscan, Graph Coloring)
+
+      section
+        h2 Replace virtual registers with real
+
+      section
+        h2 Or spill them...
+
+      section
+        h2 Before
+        img(src="/images/complex-virtual-regs.png",height="400")
+
+      section
+        h2 After
+        img(src="/images/complex-real-regs.png",height="400")
+
+      section
+        h2 SSA + JIT Assembler
+
+      section
+        img(src="/images/asm.png",width="300")
+
+      section
+        h2 Demo time
+        img(src="/images/demo.png",width="600")
+
+      section
+        h2 JS.js
+        img(src="/images/qr-js.svg",width="500")
+
+      section
+        h2 Heap.js
+        img(src="/images/qr-heap-js.svg",width="500")
+
+      section
+        h2 SSA.js + Phi.js
+        img(src="/images/qr-ssa-js.svg",width="250")
+        img(src="/images/qr-phi-js.svg",width="250")
+
+      section
+        h2 Linearscan.js + JIT.js
+        img(src="/images/qr-linearscan.svg",width="250")
+        img(src="/images/qr-jit-js.svg",width="250")
+
+      section
+        h1 Thank you
+
+      section
+        h2 Speaking of...
+
+      section
+        h1 V8
+
+      section
+        h2 IRHydra + node v0.11
+        img(src="/images/qr-irhydra.svg",width="250")
+
+      section
+        h2 Required args
+        pre
+          code.language-clike.
+            node \
+              --trace-hydrogen \
+              --trace-phase=Z \
+              --trace-deopt \
+              --print-opt-code \
+              --code-comments \
+              --hydrogen-track-positions \
+              --redirect-code-traces \
+              --redirect-code-traces-to=code.asm \
+              your-script.js
+
+      section
+        h2 CFG
+        img(src="/images/ir-hydra-cfg.png",height="300")
+
+      section
+        h2 SSA
+        img(src="/images/ir-hydra-ssa.png",width="400")
+
+      section
+        h2 Assembly
+        img(src="/images/ir-hydra-asm.png",width="400")
+
+      section
+        h2 Thank you!
+
+    script(src='/build/build.js')

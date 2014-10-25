@@ -1,0 +1,18 @@
+digraph {
+  node [shape=record];
+
+  B1;
+  B1 -> B2;
+  B1 -> B3;
+
+  B2 -> B4;
+  B3 -> B4;
+
+  B1 [label="{......}"]
+
+  B2 [label="{...|a1 = literal %1|...}"]
+
+  B3 [label="{...|a3 = literal %2|...}"]
+
+  B4 [label="{a2 = phi(a1, a3)|ret a2}"]
+}
